@@ -174,3 +174,53 @@ class Game:
 
     def get_opponent(self) -> int:
         return 3 - self.player_turn
+    
+     # Hàm đánh giá
+    def evaluate_player(self, player: int) -> int:
+        horizontal_evaluation: tuple = self.evaluate_horizontal(player)
+        diagonal_evaluation: tuple = self.evaluate_diagonal(player)
+        return horizontal_evaluation[0] + diagonal_evaluation[0] - horizontal_evaluation[1] - diagonal_evaluation[1]
+
+    # Đánh giá theo hàng ngang và hàng dọc
+    def evaluate_horizontal(self, player: int) -> tuple:
+        score_x: int = 0
+        score_o: int = 0
+        for row in self.board:
+            if (row == 'x').sum() == 2 and player == 1:
+                score_x = score_x + 3 + self.get_empty_squares_count()
+            elif (row == 'o').sum() == 2 and player == 2:
+                score_o = score_o + 3 + self.get_empty_squares_count()
+            elif (row == 'x').sum() == 1 and (row == 'o').sum() == 0:
+                score_x = score_x + 1
+            elif (row == 'o').sum() == 1 and (row == 'x').sum() == 0:
+                score_o = score_o + 1
+        for row in np.transpose(self.board):
+            if (row == 'x').sum() == 2 and player == 1:
+                score_x = score_x + 3 + self.get_empty_squares_count()
+            elif (row == 'o').sum() == 2 and player == 2:
+                score_o = score_o + 3 + self.get_empty_squares_count()
+            elif (row == 'x').sum() == 1 and (row == 'o').sum() == 0:
+                score_x = score_x + 1
+            elif (row == 'o').sum() == 1 and (row == 'x').sum() == 0:
+                score_o = score_o + 1
+        return score_x, score_o
+
+    # Đánh giá theo đường chéo
+    def evaluate_diagonal(self, player: int) -> tuple:
+        score_x: int = 0
+        score_o: int = 0
+        left_to_right_diagonal: np.ndarray = \
+            np.array([self.board[i][i] for i in range(self.size)])
+        right_to_left_diagonal: np.ndarray = \
+            np.array([self.board[i][self.size - i - 1] for i in range(self.size)])
+        if (left_to_right_diagonal == 'x').sum() == 2 or (right_to_left_diagonal == 'x').sum() == 2 and player == 1:
+            score_x = score_x + 3 + self.get_empty_squares_count()
+        elif (left_to_right_diagonal == 'o').sum() == 2 or (right_to_left_diagonal == 'o').sum() == 2 and player == 2:
+            score_o = score_o + 3 + self.get_empty_squares_count()
+        elif (left_to_right_diagonal == 'x').sum() == 1 and (left_to_right_diagonal == 'o').sum() == 0\
+                or (right_to_left_diagonal == 'x').sum() == 1 and (right_to_left_diagonal == 'o').sum() == 0:
+            score_x = score_x + 1
+        elif (left_to_right_diagonal == 'o').sum() == 1 and (left_to_right_diagonal == 'x').sum() == 0\
+                or (right_to_left_diagonal == 'o').sum() == 1 and (right_to_left_diagonal == 'x').sum() == 0:
+            score_o = score_o + 1
+        return score_x, score_o
