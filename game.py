@@ -117,9 +117,7 @@ class Game:
     def make_smart_move1(self) -> None:
         # self.print_board()
 
-        # best_move: tuple = self.find_best_move_minimax()
         best_move: tuple = self.find_best_move_alphabeta()
-        # best_move: tuple = self.find_best_move_mcts()
 
         if best_move == (-1, -1):  # Nếu vì lí do nào đó không tìm được nước đi tối ưu
             self.make_random_move()
@@ -129,14 +127,27 @@ class Game:
     def make_smart_move2(self) -> None:
         # self.print_board()
 
-        # best_move: tuple = self.find_best_move_minimax()
-        # best_move: tuple = self.find_best_move_alphabeta()
-        best_move: tuple = self.find_best_move_mcts()
+        best_move: tuple = self.find_best_move_minimax()
 
         if best_move == (-1, -1):  # Nếu vì lí do nào đó không tìm được nước đi tối ưu
             self.make_random_move()
         else:
             self.make_move(best_move)
+
+    def find_best_move_minimax(self) -> tuple:
+        from minimax import Minimax
+        bot: Minimax = Minimax(copy.deepcopy(self))  # Tạo bản sao của game hiện tại để mô phỏng
+        start: float = time.time()  # Tính thời gian thực hiện nước đi của bot
+
+        bot.minimax(5, self.player_turn)
+
+        end: float = time.time()
+        print(f'Time taken: {(end - start) * 10 ** 3}ms\n'
+              f'Nodes visited: {bot.node_count}')
+        best_move: tuple = bot.best_move
+        del bot
+        return best_move
+
 
     # Bắt đầu lượt
     def start_turn(self) -> None:

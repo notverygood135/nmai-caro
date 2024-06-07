@@ -12,3 +12,4 @@ def test(case: int) -> None:
 # Tham số của hàm test là số test case nó sẽ chạy
 if __name__ == '__main__':
     test(1)
+1
