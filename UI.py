@@ -52,15 +52,20 @@ def draw_board(screen, button_font):
                                       BUTTON_COLOR)
 
     # Draw Quit button
-    quit_button_rect = draw_button(screen, WINDOW_SIZE //3 + WINDOW_SIZE//3 - BUTTON_WIDTH//2, WINDOW_SIZE + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, "Quit", button_font, BUTTON_TEXT_COLOR, BUTTON_COLOR)
-    
+    quit_button_rect = draw_button(screen, WINDOW_SIZE // 3 + WINDOW_SIZE // 3 - BUTTON_WIDTH // 2,
+                                   WINDOW_SIZE + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, "Quit", button_font,
+                                   BUTTON_TEXT_COLOR, BUTTON_COLOR)
+
     # Write type of current AI (if play vs AI)
-    if(gamecode==3):
-        display_text(screen, "AI mode: Minimax Algorithm", button_font, BLUE, WINDOW_SIZE // 2, WINDOW_SIZE + BUTTON_HEIGHT*2 + 25)
-    elif(gamecode==4):
-        display_text(screen, "AI mode: Alpha-Beta Algorithm", button_font, BLUE, WINDOW_SIZE // 2, WINDOW_SIZE + BUTTON_HEIGHT*2 + 25)
-    elif(gamecode==5):
-        display_text(screen, "AI mode: MCTS Algorithm", button_font, BLUE, WINDOW_SIZE // 2, WINDOW_SIZE + BUTTON_HEIGHT*2 + 25)
+    if gamecode == 3:
+        display_text(screen, "AI mode: Minimax Algorithm", button_font, BLUE, WINDOW_SIZE // 2,
+                     WINDOW_SIZE + BUTTON_HEIGHT * 2 + 25)
+    elif gamecode == 4:
+        display_text(screen, "AI mode: Alpha-Beta Algorithm", button_font, BLUE, WINDOW_SIZE // 2,
+                     WINDOW_SIZE + BUTTON_HEIGHT * 2 + 25)
+    elif gamecode == 5:
+        display_text(screen, "AI mode: MCTS Algorithm", button_font, BLUE, WINDOW_SIZE // 2,
+                     WINDOW_SIZE + BUTTON_HEIGHT * 2 + 25)
     return restart_button_rect, quit_button_rect
 
 
@@ -88,9 +93,10 @@ def display_text(screen, text, font, color, x, y):
 
 # Function to create buttons
 def draw_button(screen, x, y, width, height, text, font, text_color, bg_color):
-    pygame.draw.rect(screen, bg_color, (x, y, width, height))
+    pygame.draw.rect(screen, bg_color, (x, y, width, height),width=1,border_radius=15)
     text_surface = font.render(text, True, text_color)
     text_rect = text_surface.get_rect(center=(x + width / 2, y + height / 2))
+    
     screen.blit(text_surface, text_rect)
     return text_rect  # Return button rectangle
 
@@ -131,7 +137,7 @@ def draw_menu(screen, button_font):
                                        BUTTON_WIDTH, BUTTON_HEIGHT, "Quit", button_font, BUTTON_TEXT_COLOR,
                                        BUTTON_COLOR)
 
-        display_text(screen, "MENU", font, BLUE, WINDOW_SIZE // 2, WINDOW_SIZE //3)
+        display_text(screen, "MENU", font, BLUE, WINDOW_SIZE // 2, WINDOW_SIZE // 3)
         pygame.display.flip()
 
 
@@ -155,18 +161,27 @@ def draw_ai_menu(screen, button_font):
                     menu_running = False  # Exit the menu loop
                 elif mcts_button_rect.collidepoint(mouse_pos):
                     gamecode = 5
-                    menu_running=False # Exit the menu loop
+                    menu_running = False  # Exit the menu loop
                 elif back_button_rect.collidepoint(mouse_pos):
                     menu_running = False  # Exit the menu loop
                     draw_menu(screen, button_font)
         screen.fill(WHITE)
         # Draw the play button and get its rectangle
         display_text(screen, "CHOOSE AI MODE", button_font, BLUE, WINDOW_SIZE // 2, WINDOW_SIZE // 4)
-        minimax_button_rect = draw_button(screen, WINDOW_SIZE // 2 - BUTTON_WIDTH // 2, WINDOW_SIZE // 2 - BUTTON_HEIGHT // 2, BUTTON_WIDTH, BUTTON_HEIGHT, "Minimax", button_font, BUTTON_TEXT_COLOR, BUTTON_COLOR)
-        alpha_beta_button_rect= draw_button(screen, WINDOW_SIZE // 2 -BUTTON_WIDTH // 2, WINDOW_SIZE // 2 + BUTTON_HEIGHT , BUTTON_WIDTH, BUTTON_HEIGHT, "Alpha-Beta", button_font, BUTTON_TEXT_COLOR, BUTTON_COLOR)
-        mcts_button_rect= draw_button(screen, WINDOW_SIZE // 2 - BUTTON_WIDTH // 2, WINDOW_SIZE // 2 + BUTTON_HEIGHT * 2 + BUTTON_HEIGHT // 2, BUTTON_WIDTH, BUTTON_HEIGHT, "MCTS", button_font, BUTTON_TEXT_COLOR, BUTTON_COLOR)
-        back_button_rect = draw_button(screen, 0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, "Back", button_font, BUTTON_TEXT_COLOR, BUTTON_COLOR)
+        minimax_button_rect = draw_button(screen, WINDOW_SIZE // 2 - BUTTON_WIDTH // 2,
+                                          WINDOW_SIZE // 2 - BUTTON_HEIGHT // 2, BUTTON_WIDTH+15, BUTTON_HEIGHT, "Minimax",
+                                          button_font, BUTTON_TEXT_COLOR, BUTTON_COLOR)
+        alpha_beta_button_rect = draw_button(screen, WINDOW_SIZE // 2 - BUTTON_WIDTH // 2,
+                                             WINDOW_SIZE // 2 + BUTTON_HEIGHT, BUTTON_WIDTH+15, BUTTON_HEIGHT,
+                                             "Alpha-Beta", button_font, BUTTON_TEXT_COLOR, BUTTON_COLOR)
+        mcts_button_rect = draw_button(screen, WINDOW_SIZE // 2 - BUTTON_WIDTH // 2,
+                                       WINDOW_SIZE // 2 + BUTTON_HEIGHT * 2 + BUTTON_HEIGHT // 2, BUTTON_WIDTH+15,
+                                       BUTTON_HEIGHT, "MCTS", button_font, BUTTON_TEXT_COLOR, BUTTON_COLOR)
+        back_button_rect = draw_button(screen, 0, 0, BUTTON_WIDTH, BUTTON_HEIGHT, "Back", button_font,
+                                       BUTTON_TEXT_COLOR, BUTTON_COLOR)
         pygame.display.flip()
+
+
 # Function to handle restart button click
 def handle_restart_button_click():
     global game
@@ -175,19 +190,15 @@ def handle_restart_button_click():
     draw_moves(screen)
     print("Game restarted")
     pygame.display.flip()
-    
+
+
 # Function to handle quit button click
 def handle_quit_button_click():
     global game
-    game= Game(3)  # Restart the game
-# Main function to run the game loop
-def main():
-    global game  # Declare game as a global variable
-    while True:
-        # Menu loop
-        draw_menu(screen, button_font)
-        # Game loop
-        if gamecode==1:
+    game = Game(3)  # Restart the game
+
+# Function to play 1vs1
+def play_1vs1():
             running = True
             restart_button_rect, quit_button_rect = draw_board(screen, button_font)
             while running:
@@ -206,47 +217,119 @@ def main():
                     if event.type == pygame.QUIT:
                         running = False
                     elif event.type == pygame.MOUSEBUTTONDOWN:
+                        x, y = pygame.mouse.get_pos()
+                        row = y // SQUARE_SIZE
+                        col = x // SQUARE_SIZE
+
+                        if row < 3 and col < 3:
+                            # Check if the clicked square is empty
+                            if game.board[row][col] == '':
+                                # Make a move
+                                game.make_move((row, col))
+                                last_move = (row, col)
+                                game.turn_count += 1  # Increment turn count
+                                # Update the display after the player's move
+                                restart_button_rect, quit_button_rect = draw_board(screen, button_font)
+                                draw_moves(screen)
+                                pygame.display.flip()
+                                # Check for winner
+                                winner = game.check_win()
+                                if winner != 0:
+                                    if game.player_turn == 1:
+                                        display_text(screen, "O won !", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
+                                    elif game.player_turn == 2:
+                                        display_text(screen, "X won !", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
+                                    pygame.display.flip()
+                                    check = True
+                                    while check:
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                                if restart_button_rect.collidepoint(event.pos):
+                                                    handle_restart_button_click()
+                                                    check = False
+                                                    break
+                                                elif quit_button_rect.collidepoint(event.pos):
+                                                    running = False
+                                                    check = False
+                                elif game.turn_count == 9:
+                                    display_text(screen, "It's a tie", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
+                                    pygame.display.flip()
+                                    check = True
+                                    while check:
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.MOUSEBUTTONDOWN:
+                                                if restart_button_rect.collidepoint(event.pos):
+                                                    handle_restart_button_click()
+                                                    check = False
+                                                    break
+                                                elif quit_button_rect.collidepoint(event.pos):
+                                                    running = False
+                                                    check = False
+                        # Check if Restart button is clicked
+                        if restart_button_rect.collidepoint(event.pos):
+                            handle_restart_button_click()
+                        # Check if Quit button is clicked
+                        if quit_button_rect.collidepoint(event.pos):
+                            handle_quit_button_click()
+                            running = False
+#Function to handle play vs AI                            
+def play_vs_AI():
+    running = True
+    restart_button_rect, quit_button_rect = draw_board(screen, button_font)
+    while running:
+                # Draw the game board
+                draw_board(screen, button_font)
+                # Draw X's and O's
+                draw_moves(screen)
+                if game.player_turn == 2:
+                    display_text(screen, "Make your move!", font, BLACK, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
+
+                # Update the display
+                pygame.display.flip()
+
+                if game.player_turn == 1:
+                    display_text(screen, "AI is calculating move ...", font, BLACK,
+                                 WINDOW_SIZE // 2, WINDOW_SIZE + 20)
+                    pygame.display.flip()
+                    # Make AI move
+                    if gamecode == 3:
+                        game.make_smart_move()
+                    elif gamecode == 4:
+                        game.make_smart_move1()
+                    elif gamecode == 5:
+                        game.make_smart_move2()
+                    game.turn_count += 1  # Increment turn count
+                    game.player_turn = 2
+
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        running = False
+                    elif event.type == pygame.MOUSEBUTTONDOWN:
+                        if game.player_turn == 2:  # Human player's turn
                             x, y = pygame.mouse.get_pos()
                             row = y // SQUARE_SIZE
                             col = x // SQUARE_SIZE
-                            
-                            if(row < 3 and col < 3):
+
+                            if row < 3 and col < 3:
                                 # Check if the clicked square is empty
-                                if (game.board[row][col] == ''):
+                                if game.board[row][col] == '':
                                     # Make a move
                                     game.make_move((row, col))
                                     last_move = (row, col)
                                     game.turn_count += 1  # Increment turn count
                                     # Update the display after the player's move
-                                    restart_button_rect, quit_button_rect = draw_board(screen,button_font)
+                                    restart_button_rect, quit_button_rect = draw_board(screen, button_font)
                                     draw_moves(screen)
                                     pygame.display.flip()
                                     # Check for winner
                                     winner = game.check_win()
                                     if winner != 0:
-                                        if game.player_turn==1:
-                                            display_text(screen, "O won !", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
-                                        elif game.player_turn==2:
-                                            display_text(screen, "X won !", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
+                                        display_text(screen, "YOU won!", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
                                         pygame.display.flip()
                                         check = True
-                                        while check :
+                                        while check:
                                             for event in pygame.event.get():
-                                                if event.type== pygame.MOUSEBUTTONDOWN:
-                                                    if restart_button_rect.collidepoint(event.pos):
-                                                        handle_restart_button_click()
-                                                        check = False
-                                                        break
-                                                    elif quit_button_rect.collidepoint(event.pos):
-                                                        running = False   
-                                                        check = False
-                                    elif game.turn_count == 9:
-                                        display_text(screen, "It's a tie", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
-                                        pygame.display.flip()
-                                        check = True
-                                        while check :
-                                            for event in pygame.event.get():
-                                                if event.type== pygame.MOUSEBUTTONDOWN:
+                                                if event.type == pygame.MOUSEBUTTONDOWN:
                                                     if restart_button_rect.collidepoint(event.pos):
                                                         handle_restart_button_click()
                                                         check = False
@@ -254,138 +337,95 @@ def main():
                                                     elif quit_button_rect.collidepoint(event.pos):
                                                         running = False
                                                         check = False
-                            # Check if Restart button is clicked
-                            if restart_button_rect.collidepoint(event.pos):
-                                handle_restart_button_click()
-                            # Check if Quit button is clicked
-                            if quit_button_rect.collidepoint(event.pos):
-                                handle_quit_button_click()
-                                running = False
-
-        else:
-                    running = True
-                    restart_button_rect, quit_button_rect = draw_board(screen, button_font)
-                    while running:
-                        # Draw the game board
-                        draw_board(screen,button_font)
-                        # Draw X's and O's
-                        draw_moves(screen)
-                        if game.player_turn == 1:
-                            display_text(screen, "Make your move!", font, BLACK, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
-                         
-                        # Update the display
-                        pygame.display.flip()
-                        for event in pygame.event.get():
-                            if event.type == pygame.QUIT:
-                                running = False
-                            elif event.type == pygame.MOUSEBUTTONDOWN:
-                                if game.player_turn == 1:  # Human player's turn
-                                    x, y = pygame.mouse.get_pos()
-                                    row = y // SQUARE_SIZE
-                                    col = x // SQUARE_SIZE
-                                    
-                                    if(row < 3 and col < 3):
-                                        # Check if the clicked square is empty
-                                        if (game.board[row][col] == ''):
-                                            # Make a move
-                                            game.make_move((row, col))
-                                            last_move = (row, col)
-                                            game.turn_count += 1  # Increment turn count
-                                            # Update the display after the player's move
-                                            restart_button_rect, quit_button_rect = draw_board(screen,button_font)
-                                            draw_moves(screen)
+                                    elif game.turn_count == 9:
+                                        display_text(screen, "It's a tie", font, RED, WINDOW_SIZE // 2,
+                                                     WINDOW_SIZE + 20)
+                                        pygame.display.flip()
+                                        check = True
+                                        while check:
+                                            for event in pygame.event.get():
+                                                if event.type == pygame.MOUSEBUTTONDOWN:
+                                                    if restart_button_rect.collidepoint(event.pos):
+                                                        handle_restart_button_click()
+                                                        check = False
+                                                        break
+                                                    elif quit_button_rect.collidepoint(event.pos):
+                                                        running = False
+                                                        check = False
+                                    else:
+                                        # Display "AI is calculating move"
+                                        display_text(screen, "AI is calculating move ...", font, BLACK,
+                                                     WINDOW_SIZE // 2, WINDOW_SIZE + 20)
+                                        pygame.display.flip()
+                                        # Make AI move
+                                        game.player_turn = 1
+                                        if gamecode == 3:
+                                            game.make_smart_move()
+                                        elif gamecode == 4:
+                                            game.make_smart_move1()
+                                        elif gamecode == 5:
+                                            game.make_smart_move2()
+                                        game.turn_count += 1  # Increment turn count
+                                        # Update the display after AI's move
+                                        draw_board(screen, button_font)
+                                        draw_moves(screen)
+                                        pygame.display.flip()
+                                        # Check for winner
+                                        winner = game.check_win()
+                                        if winner != 0:
+                                            # draw line over winner
+                                            display_text(screen, "Machine won!", font, RED, WINDOW_SIZE // 2,
+                                                         WINDOW_SIZE + 20)
                                             pygame.display.flip()
-                                            # Check for winner
-                                            winner = game.check_win()
-                                            if winner != 0:
-                                                display_text(screen, "YOU won!", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
-                                                pygame.display.flip()
-                                                check = True
-                                                while check :
-                                                    for event in pygame.event.get():
-                                                        if event.type== pygame.MOUSEBUTTONDOWN:
-                                                            if restart_button_rect.collidepoint(event.pos):
-                                                                handle_restart_button_click()
-                                                                check = False
-                                                                break
-                                                            elif quit_button_rect.collidepoint(event.pos):
-                                                                running = False
-                                                                check = False
-                                            elif game.turn_count == 9:
-                                                display_text(screen, "It's a tie", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
-                                                pygame.display.flip()
-                                                check = True
-                                                while check :
-                                                    for event in pygame.event.get():
-                                                        if event.type== pygame.MOUSEBUTTONDOWN:
-                                                            if restart_button_rect.collidepoint(event.pos):
-                                                                handle_restart_button_click()
-                                                                check = False
-                                                                break
-                                                            elif quit_button_rect.collidepoint(event.pos):
-                                                                running = False
-                                                                check = False
-                                            else:
-                                                # Display "AI is calculating move"
-                                                display_text(screen, "AI is calculating move ...", font, BLACK, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
-                                                pygame.display.flip()
-                                                # Make AI move
-                                                game.player_turn = 2
-                                                if(gamecode==3):
-                                                    game.make_smart_move()
-                                                elif(gamecode==4):
-                                                    game.make_smart_move1()
-                                                elif(gamecode==5):
-                                                    game.make_smart_move2()
-                                                game.turn_count += 1  # Increment turn count
-                                                # Update the display after AI's move
-                                                draw_board(screen,button_font)
-                                                draw_moves(screen)
-                                                pygame.display.flip()
-                                                # Check for winner
-                                                winner = game.check_win()
-                                                if winner != 0:
-                                                    # draw line over winner
-                                                    display_text(screen, "Machine won!", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
-                                                    pygame.display.flip()
-                                                    check = True
-                                                    while check :
-                                                        for event in pygame.event.get():
-                                                            if event.type== pygame.MOUSEBUTTONDOWN:
-                                                                if restart_button_rect.collidepoint(event.pos):
-                                                                    handle_restart_button_click()
-                                                                    check = False
-                                                                    break
-                                                                elif quit_button_rect.collidepoint(event.pos):
-                                                                    running = False
-                                                                    check = False
-                                                elif game.turn_count == 9:
-                                                    running = False  # Tie game
-                                                    display_text(screen, "It's a tie!", font, RED, WINDOW_SIZE // 2, WINDOW_SIZE + 20)
-                                                    pygame.display.flip()
-                                                    check = True
-                                                    while check :
-                                                        for event in pygame.event.get():
-                                                            if event.type== pygame.MOUSEBUTTONDOWN:
-                                                                if restart_button_rect.collidepoint(event.pos):
-                                                                    handle_restart_button_click()
-                                                                    check = False
-                                                                    break
-                                                                elif quit_button_rect.collidepoint(event.pos):
-                                                                    
-                                                                    running = False        
-                                                                    check = False                                                                
-                                                else:
-                                                    # Switch back to the human player's turn
-                                                    game.player_turn = 1
-                                # Check if Restart button is clicked
-                                if restart_button_rect.collidepoint(event.pos):
-                                    handle_restart_button_click()
-                                # Check if Quit button is clicked
-                                if quit_button_rect.collidepoint(event.pos):
-                                    handle_quit_button_click()
-                                    running = False
-    
+                                            check = True
+                                            while check:
+                                                for event in pygame.event.get():
+                                                    if event.type == pygame.MOUSEBUTTONDOWN:
+                                                        if restart_button_rect.collidepoint(event.pos):
+                                                            handle_restart_button_click()
+                                                            check = False
+                                                            break
+                                                        elif quit_button_rect.collidepoint(event.pos):
+                                                            running = False
+                                                            check = False
+                                        elif game.turn_count == 9:
+                                            running = False  # Tie game
+                                            display_text(screen, "It's a tie!", font, RED, WINDOW_SIZE // 2,
+                                                         WINDOW_SIZE + 20)
+                                            pygame.display.flip()
+                                            check = True
+                                            while check:
+                                                for event in pygame.event.get():
+                                                    if event.type == pygame.MOUSEBUTTONDOWN:
+                                                        if restart_button_rect.collidepoint(event.pos):
+                                                            handle_restart_button_click()
+                                                            check = False
+                                                            break
+                                                        elif quit_button_rect.collidepoint(event.pos):
+
+                                                            running = False
+                                                            check = False
+                                        else:
+                                            # Switch back to the human player's turn
+                                            game.player_turn = 2
+                        # Check if Restart button is clicked
+                        if restart_button_rect.collidepoint(event.pos):
+                            handle_restart_button_click()
+                        # Check if Quit button is clicked
+                        if quit_button_rect.collidepoint(event.pos):
+                            handle_quit_button_click()
+                            running = False
+                            
+# Main function to run the game loop
+def main():
+    global game  # Declare game as a global variable
+    while True:
+        # Menu loop
+        draw_menu(screen, button_font)
+        if gamecode == 1:
+            play_1vs1()
+        else:
+            play_vs_AI()
 
 if __name__ == "__main__":
     main()
