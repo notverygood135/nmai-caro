@@ -137,7 +137,19 @@ class Game:
             self.make_random_move()
         else:
             self.make_move(best_move)
+    def find_best_move_alphabeta(self) -> tuple:
+        from alphabetapruning import AlphaBeta
+        bot: AlphaBeta = AlphaBeta(copy.deepcopy(self))  # Tạo bản sao của game hiện tại để mô phỏng
 
+        start: float = time.time()  # Tính thời gian thực hiện nước đi của bot
+        bot.alpha_beta_pruning(5, self.player_turn, -math.inf, math.inf)
+        end: float = time.time()
+
+        print(f'Time taken: {(end - start) * 10 ** 3}ms\n'
+              f'Nodes visited: {bot.node_count}')
+        best_move: tuple = bot.best_move
+        del bot
+        return best_move
     # Bắt đầu lượt
     def start_turn(self) -> None:
         if self.player_turn == 1:
