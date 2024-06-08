@@ -127,7 +127,7 @@ class Game:
     def make_smart_move2(self) -> None:
         # self.print_board()
 
-        best_move: tuple = self.find_best_move_minimax()
+        best_move: tuple = self.find_best_move_mcts()
 
         if best_move == (-1, -1):  # Nếu vì lí do nào đó không tìm được nước đi tối ưu
             self.make_random_move()
@@ -139,7 +139,7 @@ class Game:
         bot: AlphaBeta = AlphaBeta(copy.deepcopy(self))  # Tạo bản sao của game hiện tại để mô phỏng
 
         start: float = time.time()  # Tính thời gian thực hiện nước đi của bot
-        bot.alpha_beta_pruning(5, self.player_turn, -math.inf, math.inf)
+        bot.alpha_beta_pruning(3, self.player_turn, -math.inf, math.inf)
         end: float = time.time()
         print(f'Time taken: {(end - start) * 10 ** 3}ms\n'
               f'Nodes visited: {bot.node_count}')
@@ -152,9 +152,23 @@ class Game:
         bot: Minimax = Minimax(copy.deepcopy(self))  # Tạo bản sao của game hiện tại để mô phỏng
         start: float = time.time()  # Tính thời gian thực hiện nước đi của bot
 
-        bot.minimax(5, self.player_turn)
+        bot.minimax(3, self.player_turn)
 
         end: float = time.time()
+        print(f'Time taken: {(end - start) * 10 ** 3}ms\n'
+              f'Nodes visited: {bot.node_count}')
+        best_move: tuple = bot.best_move
+        del bot
+        return best_move
+
+    def find_best_move_mcts(self) -> tuple:
+        from mcts import MCTS
+        bot: MCTS = MCTS(copy.deepcopy(self))
+
+        start: float = time.time()  # Tính thời gian thực hiện nước đi của bot
+        bot.monte_carlo_tree_search(0.25)
+        end: float = time.time()
+
         print(f'Time taken: {(end - start) * 10 ** 3}ms\n'
               f'Nodes visited: {bot.node_count}')
         best_move: tuple = bot.best_move

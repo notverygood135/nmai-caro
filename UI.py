@@ -272,6 +272,7 @@ def play_1vs1():
                         if quit_button_rect.collidepoint(event.pos):
                             handle_quit_button_click()
                             running = False
+
 #Function to handle play vs AI                            
 def play_vs_AI():
     running = True
