@@ -85,16 +85,16 @@ class MCTS:
     def simulate_random_playout(self, node: Node) -> float:
         temp_node: Node = copy.deepcopy(node)
         if temp_node.game.check_win() == self.opponent:
-            return -3 - temp_node.game.get_empty_squares_count()/2
+            return -1 - temp_node.game.get_empty_squares_count()/2
         elif temp_node.game.check_win() == self.game.player_turn:
-            return 3 + temp_node.game.get_empty_squares_count()/2
+            return 1 + temp_node.game.get_empty_squares_count()/2
 
         while not temp_node.game.check_win() and temp_node.game.get_empty_squares_count() > 0:
             temp_node.game.make_random_move()
         if temp_node.game.check_win() == self.opponent:
-            return -3 - temp_node.game.get_empty_squares_count()
+            return -1 - temp_node.game.get_empty_squares_count()/2
         elif temp_node.game.check_win() == self.game.player_turn:
-            return 3 + temp_node.game.get_empty_squares_count()
+            return 1 + temp_node.game.get_empty_squares_count()/2
         else:
             return 0
 
