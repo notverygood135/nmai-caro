@@ -139,7 +139,7 @@ class Game:
         bot: AlphaBeta = AlphaBeta(copy.deepcopy(self))  # Tạo bản sao của game hiện tại để mô phỏng
 
         start: float = time.time()  # Tính thời gian thực hiện nước đi của bot
-        bot.alpha_beta_pruning(3, self.player_turn, -math.inf, math.inf)
+        bot.alpha_beta_pruning(5, self.player_turn, -math.inf, math.inf)
         end: float = time.time()
         print(f'Time taken: {(end - start) * 10 ** 3}ms\n'
               f'Nodes visited: {bot.node_count}')
@@ -152,7 +152,7 @@ class Game:
         bot: Minimax = Minimax(copy.deepcopy(self))  # Tạo bản sao của game hiện tại để mô phỏng
         start: float = time.time()  # Tính thời gian thực hiện nước đi của bot
 
-        bot.minimax(3, self.player_turn)
+        bot.minimax(5, self.player_turn)
 
         end: float = time.time()
         print(f'Time taken: {(end - start) * 10 ** 3}ms\n'
@@ -223,18 +223,18 @@ class Game:
         score_x: int = 0
         score_o: int = 0
         for row in self.board:
-            if (row == 'x').sum() == 2 and player == 1:
+            if (row == 'x').sum() == 2 and (row == 'o').sum == 0 and player == 1:
                 score_x = score_x + 3 + self.get_empty_squares_count()
-            elif (row == 'o').sum() == 2 and player == 2:
+            elif (row == 'o').sum() == 2 and (row == 'o').sum == 0 and player == 2:
                 score_o = score_o + 3 + self.get_empty_squares_count()
             elif (row == 'x').sum() == 1 and (row == 'o').sum() == 0:
                 score_x = score_x + 1
             elif (row == 'o').sum() == 1 and (row == 'x').sum() == 0:
                 score_o = score_o + 1
         for row in np.transpose(self.board):
-            if (row == 'x').sum() == 2 and player == 1:
+            if (row == 'x').sum() == 2 and (row == 'o').sum == 0 and player == 1:
                 score_x = score_x + 3 + self.get_empty_squares_count()
-            elif (row == 'o').sum() == 2 and player == 2:
+            elif (row == 'o').sum() == 2 and (row == 'o').sum == 0 and player == 2:
                 score_o = score_o + 3 + self.get_empty_squares_count()
             elif (row == 'x').sum() == 1 and (row == 'o').sum() == 0:
                 score_x = score_x + 1

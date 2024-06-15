@@ -57,4 +57,6 @@ class AlphaBeta:
             if prune:
                 break
         self.best_move = curr_best_move
+        if depth == 5:
+            print(f'Alpha: {alpha}, beta: {beta}')
         return curr_max
